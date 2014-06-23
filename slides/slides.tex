@@ -1,0 +1,360 @@
+% Класс документа с параметрами: кегль шрифта, шрифт с засечками для формул,
+% соотношение сторон слайда
+\documentclass[14pt,mathserif,aspectratio=43]{beamer}
+
+% Кодировка файла
+\usepackage[utf8]{inputenc}
+% Переносы для русского языка
+\usepackage[russian]{babel}
+
+\usepackage{xcolor}
+% Цвет логотипа лаборатории
+\definecolor{lab-blue}{RGB}{30,97,182}
+% Ищется в яндексе по запросу «травяной цвет»
+\definecolor{grass}{RGB}{93,161,48}
+
+\usepackage[T1]{fontenc}
+% Шрифт для формул
+\usepackage[bitstream-charter]{mathdesign}
+
+% Математические символы
+\usepackage{amsmath}
+
+% Перечёркивание текста
+\usepackage{ulem}
+
+\usepackage{bbm}
+
+% Основной цвета beamer'а (по умолчанию — синий)
+\setbeamercolor{structure}{fg=black}
+
+% Путь к картинкам
+\graphicspath{{images/}}
+
+% Нумерация слайдов
+\setbeamertemplate{footline}{%
+\raisebox{7pt}{\makebox[\paperwidth]{%
+\hfill\makebox[10pt]{\scriptsize\textcolor{gray}{\insertframenumber~~~~}}}}}
+
+% Начинать нумерацию слайдов не с титульного слайда
+% \let\otp\titlepage
+% \renewcommand{\titlepage}{\otp\addtocounter{framenumber}{-1}}
+
+% Сноска без номера
+\newcommand\articlenote[1]{%
+  \begingroup%
+  \renewcommand\thefootnote{}\footnote{#1}%
+  \addtocounter{footnote}{-1}%
+  \endgroup%
+}
+
+% Убрать навигацию beamer'а по умолчанию
+\beamertemplatenavigationsymbolsempty
+
+% Параметры для создания титульной страницы
+\title{Обзор дескрипторов локальных особенностей \vspace{-1em}}
+\author{Федор Морозов}
+\usepackage{epstopdf}
+\institute{
+
+    Научный руководитель к.ф-м.н. Конушин А. С. \\
+    \medskip
+    Факультет ВМК МГУ им. М.В.\,Ломоносова\\
+    Лаборатория КГиМ\\
+    Семинар <<Компьютерное зрение>>
+
+    \medskip
+
+    \includegraphics[scale=0.9]{lab_logo.eps}
+
+    \medskip
+}
+
+% Время
+\date{\small{19 мая 2014 г.}}
+
+\begin{document}
+
+%-------------------------------------------------------------------------------
+\begin{frame}[plain]
+    \titlepage
+\end{frame}
+
+\begin{frame}{Задачи}
+    \begin{itemize}
+        \item Ознакомиться с аналогичными обзорами прошлых лет
+        \pause
+        \item Выбрать набор дескрипторов для тестирования
+		\pause
+		\item Выбрать задачу для оценки качества дескрипторов
+		\pause
+		\item Реализовать решение выбранной задачи и протестировать различные пары детекторов и дескрипторов	
+    \end{itemize}
+    
+\end{frame}
+
+%-------------------------------------------------------------------------------
+\begin{frame}{Актуальность}
+
+    \begin{itemize}
+        \item Все доступные обзоры были написаны не позднее 2011 года.
+        \pause
+        \item В 2011 -- 2013 годах было разработано множество новых подходов, были доработаны подходы на основе машинного обучения.
+		\pause
+		\item Также в последние годы выросло число бинарных дескрипторов локальных особенностей.
+		\pause
+        \item Сравнение проводится для значительного числа современных алгоритмов.
+		\pause
+		\item Тестирование проводится на новой прикладной задаче.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Бинарные дескрипторы}
+    \begin{itemize}
+        \item Дескриптор представляет собой битовую строку фиксированной длины.
+        \pause
+        \item В результате дескриптор получается более компактным, чем вещественные.
+        \pause
+        \item Обычно можно использовать расстояние Хэмминга для сопоставления дескрипторов.
+        \pause
+        \item Возможно построение ускоренных алгоритмов сопоставления и поиска (например,  Multi-index hashing).
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Области применения дескрипторов}
+    \begin{itemize}
+        \item Классификация и детектирование объектов
+
+        \item Сопровождение объектов
+
+        \item 3D-реконструкция
+
+        \item Распознавание жестов
+		
+        \item Поиск изображений
+
+		\item Сшивка панорам
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Стандартные данные для тестирования}
+	\begin{itemize}
+        \item Mikolajczyk: набор изображений одной сцены с известными преобразованиями гомографии между кадрами.
+        \pause
+        \item Brown: база фрагментов изображений, взятых вокруг пар соответствующих ключевых точек.
+        \pause
+        \item opencv: множество поворотов одного изображения.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Другие обзоры}
+    \begin{itemize}
+
+    	\item 2005 --- Изображения сцены с известной гомографией (GLOH, SIFT, PCA-SIFT)
+    	\pause
+    	\item 2010 --- Поиск изображений (SIFT, CHoG, MPEG-7)
+    	\pause
+		\item 2010 --- Распознавание объектов	(SIFT, использование цвета)
+		\pause
+		\item 2011 --- Сопровождение объектов (SIFT, SURF, Random Forest)
+		\pause
+		\item 2011 --- Изображения сцены с известной гомографией (SIFT, DAISY)
+		\pause
+		\item 2011 --- Детектирование пешеходов (FREAK, SURF, BRISK)
+	\end{itemize}    
+\end{frame}
+
+\begin{frame}{Рассмотренные дескрипторы}
+    \begin{itemize}
+    	\item Популярные вещественные
+
+    	\begin{itemize}
+    		\item SIFT
+
+    		\item SURF
+
+    	\end{itemize}
+
+		\item Простые бинарные
+
+		\begin{itemize}
+
+			\item BRIEF
+
+    		\item ORB
+
+    		\item BRISK
+
+			\item FREAK
+
+			\item A-KAZE
+
+		\end{itemize}
+
+		\item Использующие бустинг
+
+		\begin{itemize}
+
+			\item BinBoost (128 бит)
+
+    		\item BinBoost (256 бит)
+
+    		\item BGM
+
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Разбор панорам}
+    Дана серия из пяти изображений с камеры на автомобиле. \\
+    Известно, что три или более из этих изображений сняты в одной локации (относятся к одной панораме). \\
+    Задача --- определить лишние кадры в серии. \\
+    
+    \bigskip
+
+    Оценка качества --- доля правильно классифицированных изображений. \\
+
+	\bigskip
+
+    \includegraphics[scale=0.25]{1_1.jpg}
+    \includegraphics[scale=0.25]{1_2.jpg}
+	\includegraphics[scale=0.25]{1_3.jpg}
+	\includegraphics[scale=0.25]{1_4.jpg}
+	\includegraphics[scale=0.25]{1_5.jpg}
+
+
+\end{frame}
+
+\begin{frame}{Формальная постановка задачи}
+    Входные данные: \\
+
+    \medskip
+
+    	$\{I_1, \dots, I_5\} \in \mathbb{R}^{300 \times 300}$ --- набор изображений в оттенках серого.
+
+		\pause
+	Выходные данные: \\
+
+		\medskip
+
+		$\{x_1, \dots, x_5\} \in \mathbb\{0, 1\}$, где $x_i = 1$, если изображение входит в панораму, иначе $x_i = 0$.
+		\pause
+	Оценка качества: \\	
+
+		\medskip
+
+		$Score = \frac{1}{5}\sum_{i=1}^5{\mathbbm{1}(x_i = y_i)}$, где $y_i$ --- правильная метка для \textit{i-го} изображения.
+
+\end{frame}
+
+\begin{frame}{Алгоритм решения}
+    \begin{enumerate}
+    		\pause
+			\item Найдем и опишем локальные особенности на всех изображениях.
+			\pause
+    		\item Для каждой пары изображений найдем соответствия между дескрипторами.
+    		\pause
+    		\item Для каждой пары изображений оценим модель гомографии и вычислим число удовлетворяющих ей соответствий.
+    		\pause
+    		\item Построим матрицу соответствия между изображениями.
+    		\pause
+    		\item Выберем набор изображений, наиболее вероятно составляющих панораму.
+
+		\end{enumerate}
+\end{frame}
+
+\begin{frame}{Реализация}
+    Для реализации использовалась библиотека opencv и язык C++. \\
+    \pause
+    \medskip
+
+    Для дескрипторов BinBoost, BGM и A-KAZE были использованы авторские реализации. \\
+    \pause
+    \bigskip
+
+    Тестирование проводилось на всех доступных данных (1000 серий для разбора). \\
+\end{frame}
+
+\begin{frame}{Детекторы}
+    Дескрипторы были протестированы в паре с различными детекторами.
+    \pause
+    \bigskip
+
+    Основным детектором был выбран SURF.
+	\pause
+	\bigskip
+	\pause
+	Для некоторых дескрипторов также использовался авторский детектор. \\
+	Такие тесты отмечены символом *.
+
+\end{frame}
+
+\begin{frame}{Результаты сравнения}
+	
+	\begin{tabular}{ | l | c | }
+    \hline
+    BINBOOST-128 & 0.904 \\
+    \hline
+	BRIEF & 0.902 \\
+	\hline
+	SIFT* & 0.899 \\
+	\hline
+	BINBOOST-256 & 0.898 \\
+	\hline
+	BGM & 0.893 \\
+	\hline
+	SURF & 0.893 \\
+	\hline
+	ORB & 0.892 \\
+	\hline
+	BRISK & 0.888 \\
+	\hline
+	SIFT & 0.884 \\
+	\hline
+	AKAZE* & 0.863 \\
+	\hline
+	ORB* & 0.840 \\
+	\hline
+	FREAK & 0.788 \\
+	\hline
+	BRISK* & 0.656 \\
+	\hline
+
+    \end{tabular}
+\end{frame}
+
+\begin{frame}{Результаты сравнения}
+	\includegraphics[width=\linewidth]{score.eps}
+	\articlenote{* использование авторского детектора}
+\end{frame}
+
+\begin{frame}{Сравнение времени вычисления}
+	\includegraphics[width=\linewidth]{time.eps}
+\end{frame}
+
+\begin{frame}{Скорость работы}
+	\includegraphics[width=\linewidth]{speed.eps}
+\end{frame}
+
+\begin{frame}{Резюме}
+	\begin{itemize}
+        \item Современные двоичные дескрипторы представляют достойную альтернативу дескрипторам SIFT и SURF.
+        \pause
+        \item При этом многие из них требуют значительно меньше вычислительных ресурсов на вычисление и сопоставление.
+        \pause
+        \item Результат работы с локальными особенностями сильно зависит от выбранного детектора.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Дальнейшие планы}
+	\begin{itemize}
+        \item Реализация тестирования на данных Mikolajczyk и Brown.
+        \pause
+        \item Переработка тестирующей системы библиотеки opencv.
+        \pause
+        \item Тестирование дескрипторов в поблочных алгоритмах вычитания фона и 3D-реконструкции.
+    \end{itemize}
+\end{frame}
+
+\end{document}
+
